@@ -1,0 +1,25 @@
+.Tracks {
+  .Container {
+    margin: auto;
+    max-width: 1024px;
+  }
+
+  .Title {
+    margin: auto;
+  }
+
+  .TracksList {
+    :global {
+      .ant-list-item {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: lightgray;
+        }
+      }
+    }
+  }
+}
