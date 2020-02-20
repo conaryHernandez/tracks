@@ -66,7 +66,7 @@ Once your app is running you will see the Home page of the app.
 
 <img src="/images/home.png" alt="Home Page">
 
-You can see the list of tracks avaible for this data.
+You can see the list of tracks avaible.
 When you click the "Details" button the following modal will appear. You can check the track title and the artist.
 
 <img src="/images/tracks-modal.png" alt="Tracks Modal">
