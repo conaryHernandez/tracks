@@ -4,22 +4,12 @@
     max-width: 1024px;
   }
 
-  .Title {
-    margin: auto;
-  }
+  .TracksTitle {
+    padding-left: 1rem;
+    text-align: left;
 
-  .TracksList {
-    :global {
-      .ant-list-item {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background-color: lightgray;
-        }
-      }
+    h1 {
+      margin-bottom: 0;
     }
   }
 }
