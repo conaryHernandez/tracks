@@ -9,8 +9,6 @@ export const fetchTracks = () => {
         dispatch(fetchTracksSuccess(response.data.tracks));
       })
       .catch(error => {
-        console.log('error', error);
-
         dispatch(fetchTracksFail(error));
       });
   };

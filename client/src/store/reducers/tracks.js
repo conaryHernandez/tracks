@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  tracks: []
+  tracks: [],
+  error: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,11 +12,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         tracks: action.payload
       };
+    case actionTypes.GET_TRACKS_FAIL:
+      return {
+        ...state,
+        error: action.payload
+      };
     case actionTypes.POST_TRACK_SUCCESS:
-      console.log('track', action.payload);
       return {
         ...state,
         track: action.payload
+      };
+    case actionTypes.POST_TRACK_FAIL:
+      return {
+        ...state,
+        error: action.payload
       };
     default:
       return state;
