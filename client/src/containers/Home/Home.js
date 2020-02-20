@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Icon, Button, Modal, Typography, Result } from 'antd';
 
@@ -20,28 +21,17 @@ const Home = props => {
     setFetchLoading(true);
     setVisible(true);
     onGetSingleTrack(trackId);
-    setFetchLoading(false);
   };
 
   useEffect(() => {
     onGetTracks();
   }, [onGetTracks]);
 
+  useEffect(() => {
+    setFetchLoading(false);
+  }, [singleTrack]);
+
   const handleOk = () => setVisible(false);
-
-  if (tracks.length === 0) {
-    return (
-      <Result
-        title="No Tracks found."
-        extra={
-          <Button type="primary" key="console" onClick={() => onGetTracks()}>
-            Refresh
-          </Button>
-        }
-      />
-    );
-  }
-
   return (
     <div className={classes.Tracks}>
       <div className={classes.Container}>
@@ -50,32 +40,45 @@ const Home = props => {
           <p>Found: {tracks.length} tracks.</p>
         </div>
 
-        <TracksList
-          tracks={tracks}
-          getTracks={onGetTracks}
-          onButtonClick={openModal}
-        />
-
-        <Modal
-          title="Track Details"
-          visible={visible}
-          onOk={handleOk}
-          onCancel={() => setVisible(false)}
-        >
-          {fetchLoading ? (
-            <Spinner />
-          ) : (
-            <>
-              <p>
-                <Icon type="customer-service" /> Track Title:{' '}
-                {singleTrack?.track_title}
-              </p>
-              <p>
-                <Icon type="crown" /> Artist: {singleTrack?.artist}
-              </p>
-            </>
-          )}
-        </Modal>
+        {tracks.length > 0 ? (
+          <>
+            {' '}
+            <TracksList
+              tracks={tracks}
+              getTracks={onGetTracks}
+              onButtonClick={openModal}
+            />
+            <Modal
+              title="Track Details"
+              visible={visible}
+              onOk={handleOk}
+              onCancel={() => setVisible(false)}
+            >
+              {fetchLoading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <p>
+                    <Icon type="customer-service" /> Track Title:{' '}
+                    {singleTrack?.track_title}
+                  </p>
+                  <p>
+                    <Icon type="crown" /> Artist: {singleTrack?.artist}
+                  </p>
+                </>
+              )}
+            </Modal>
+          </>
+        ) : (
+          <Result
+            title="No Tracks found."
+            extra={
+              <Button type="primary" key="console">
+                <Link to="/">Refresh</Link>
+              </Button>
+            }
+          />
+        )}
       </div>
     </div>
   );
