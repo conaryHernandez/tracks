@@ -2,20 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 const p = path.join(
-  path.dirname(process.mainModule.filename),
+  process.mainModule ? path.dirname(process.mainModule.filename) : `test`,
   'data',
   'tracks.json'
 );
-
-const getTracksFromFile = cb => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
 
 module.exports = class Track {
   constructor(id, track_title, artist) {
@@ -25,13 +15,24 @@ module.exports = class Track {
   }
 
   static fetchAll(cb) {
-    getTracksFromFile(cb);
+    this.getTracksFromFile(cb);
   }
 
   static findById(id, cb) {
-    getTracksFromFile(tracks => {
+    this.getTracksFromFile(tracks => {
       const track = tracks[id];
+
       cb(track);
+    });
+  }
+
+  static getTracksFromFile(cb) {
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        cb([]);
+      } else {
+        cb(JSON.parse(fileContent));
+      }
     });
   }
 };

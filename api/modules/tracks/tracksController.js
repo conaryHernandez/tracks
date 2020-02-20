@@ -25,7 +25,7 @@ exports.postTrack = (req, res, next) => {
 
   try {
     if (!id) {
-      const error = new Error('No track found.');
+      const error = new Error('Please provide an ID');
 
       error.statusCode = 404;
 
@@ -33,6 +33,14 @@ exports.postTrack = (req, res, next) => {
     }
 
     Track.findById(id, track => {
+      if (!track) {
+        const error = new Error('No track found.');
+
+        error.statusCode = 404;
+
+        throw error;
+      }
+
       res.status(200).json({ message: 'success', track });
     });
   } catch (err) {
