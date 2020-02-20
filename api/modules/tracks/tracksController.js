@@ -9,7 +9,7 @@ exports.getAllTracks = (req, res, next) => {
     Track.fetchAll(tracks => {
       res.status(200).json({
         message: 'success',
-        data: tracks
+        tracks: Object.keys(tracks)
       });
     });
   } catch (err) {
@@ -33,9 +33,9 @@ exports.postTrack = (req, res, next) => {
     }
 
     Track.findById(id, track => {
-      res.status(200).json({ message: 'success', data: track });
+      res.status(200).json({ message: 'success', track });
     });
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
