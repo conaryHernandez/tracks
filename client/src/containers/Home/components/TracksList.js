@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { List, message, Icon, Button } from 'antd';
+import PropTypes from 'prop-types';
 
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
@@ -124,6 +125,17 @@ const TracksList = props => {
       {loading && <Spinner />}
     </List>
   );
+};
+
+TracksList.propTypes = {
+  tracks: PropTypes.array.isRequired,
+  getTracks: PropTypes.func,
+  onButtonClick: PropTypes.func
+};
+
+TracksList.defaultProps = {
+  getTracks: () => {},
+  onButtonClick: () => {}
 };
 
 export default TracksList;
