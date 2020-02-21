@@ -1,5 +1,6 @@
 import React from 'react';
 import { List, Icon, Button } from 'antd';
+import PropTypes from 'prop-types';
 
 import VList from 'react-virtualized/dist/commonjs/List';
 
@@ -46,6 +47,28 @@ const vlist = ({
       width={width}
     />
   );
+};
+
+vlist.propTypes = {
+  height: PropTypes.number,
+  isScrolling: PropTypes.bool,
+  onChildScroll: PropTypes.func,
+  scrollTop: PropTypes.number,
+  tracks: PropTypes.array,
+  width: PropTypes.number,
+  onRowsRendered: PropTypes.func,
+  onButtonClick: PropTypes.func
+};
+
+vlist.defaultProps = {
+  height: 0,
+  isScrolling: false,
+  onChildScroll: () => {},
+  scrollTop: 0,
+  tracks: [],
+  width: 0,
+  onRowsRendered: () => {},
+  onButtonClick: () => {}
 };
 
 export default vlist;

@@ -13,7 +13,13 @@ import ModalContent from './components/ModalContent/ModalContent';
 const { Title } = Typography;
 
 const Home = props => {
-  const { onGetTracks, tracks = [], onGetSingleTrack, singleTrack } = props;
+  const {
+    onGetTracks,
+    tracks = [],
+    onGetSingleTrack,
+    singleTrack,
+    error
+  } = props;
 
   const [fetchLoading, setFetchLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -25,16 +31,17 @@ const Home = props => {
   };
 
   useEffect(() => {
+    setFetchLoading(true);
     onGetTracks();
   }, [onGetTracks]);
 
   useEffect(() => {
     setFetchLoading(false);
-  }, [singleTrack]);
+  }, [singleTrack, tracks]);
 
   const handleOk = () => setVisible(false);
 
-  if (props.tracks === 0) {
+  if (error?.message) {
     return (
       <div className={classes.Tracks}>
         <div className={classes.Container}>
@@ -63,6 +70,8 @@ const Home = props => {
           <p>Found: {tracks.length} tracks.</p>
         </div>
 
+        {tracks.length === 0 && !error?.message && <Spinner />}
+
         <TracksList
           tracks={tracks}
           getTracks={onGetTracks}
@@ -88,7 +97,8 @@ const Home = props => {
 const mapStateToProps = state => {
   return {
     tracks: state.trck.tracks,
-    singleTrack: state.trck.track
+    singleTrack: state.trck.track,
+    error: state.trck.error
   };
 };
 
