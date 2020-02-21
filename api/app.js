@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const config = require('./config');
+const { statusCodes, serverMessages } = require('./constants');
 
 const app = express();
 const tracksRoutes = require('./modules/tracks/tracksRoutes');
@@ -21,8 +21,8 @@ app.use((req, res, next) => {
 app.use(tracksRoutes);
 
 app.use((error, req, res, next) => {
-  const status = error.statusCode || 500;
-  const message = error.message;
+  const status = error.statusCode || statusCodes.SERVER_ERROR;
+  const message = error.message || serverMessages.INTERNAL_ERROR;
   const data = error.data;
   res.status(status).json({ message, data: data });
 });

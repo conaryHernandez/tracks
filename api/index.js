@@ -1,6 +1,6 @@
 const config = require('./config');
-const app = require('./app');
 const signale = require('signale');
+const app = require('./app');
 
 const server = app.listen(config.PORT, '0.0.0.0');
 

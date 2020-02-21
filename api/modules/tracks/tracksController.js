@@ -1,3 +1,4 @@
+const { statusCodes, serverMessages } = require('../../constants');
 const Track = require('./tracksModel');
 /**
  * @param {Request} req
@@ -7,14 +8,14 @@ const Track = require('./tracksModel');
 exports.getAllTracks = (req, res, next) => {
   try {
     Track.fetchAll(tracks => {
-      res.status(200).json({
-        message: 'success',
+      res.status(statusCodes.OK).json({
+        message: serverMessages.SUCCESS,
         tracks: Object.keys(tracks)
       });
     });
   } catch (err) {
     if (!err.statusCode) {
-      err.statusCode = 500;
+      err.statusCode = statusCodes.SERVER_ERROR;
     }
     next(err);
   }
@@ -27,7 +28,7 @@ exports.postTrack = (req, res, next) => {
     if (!id) {
       const error = new Error('Please provide an ID');
 
-      error.statusCode = 404;
+      error.statusCode = statusCodes.NOT_FOUND;
 
       throw error;
     }
@@ -36,12 +37,14 @@ exports.postTrack = (req, res, next) => {
       if (!track) {
         const error = new Error('No track found.');
 
-        error.statusCode = 404;
+        error.statusCode = statusCodes.NOT_FOUND;
 
         throw error;
       }
 
-      res.status(200).json({ message: 'success', track });
+      res
+        .status(statusCodes.OK)
+        .json({ message: serverMessages.SUCCESS, track });
     });
   } catch (err) {
     next(err);
