@@ -1,6 +1,4 @@
-import checkPropTypes from 'check-prop-types';
-
-import rootReducer from './store/reducers/tracks';
+import rootReducer from '../store/reducers/tracks';
 import { middlewares } from './middlewares';
 import { createStore, applyMiddleware } from 'redux';
 

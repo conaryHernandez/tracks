@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Icon, Button, Modal, Typography, Result } from 'antd';
+import { Button, Modal, Typography, Result } from 'antd';
 
 import { Spinner } from '../../components/UI';
 import * as actions from '../../store/actions';
 
 import classes from './Home.module.scss';
-import TracksList from './components/TracksList';
+import TracksList from './components/TracksList/TracksList';
+import ModalContent from './components/ModalContent/ModalContent';
 
 const { Title } = Typography;
 
@@ -32,44 +33,15 @@ const Home = props => {
   }, [singleTrack]);
 
   const handleOk = () => setVisible(false);
-  return (
-    <div className={classes.Tracks}>
-      <div className={classes.Container}>
-        <div className={classes.TracksTitle}>
-          <Title>Catalog</Title>
-          <p>Found: {tracks.length} tracks.</p>
-        </div>
 
-        {tracks.length > 0 ? (
-          <>
-            {' '}
-            <TracksList
-              tracks={tracks}
-              getTracks={onGetTracks}
-              onButtonClick={openModal}
-            />
-            <Modal
-              title="Track Details"
-              visible={visible}
-              onOk={handleOk}
-              onCancel={() => setVisible(false)}
-            >
-              {fetchLoading ? (
-                <Spinner />
-              ) : (
-                <>
-                  <p>
-                    <Icon type="customer-service" /> Track Title:{' '}
-                    {singleTrack?.track_title}
-                  </p>
-                  <p>
-                    <Icon type="crown" /> Artist: {singleTrack?.artist}
-                  </p>
-                </>
-              )}
-            </Modal>
-          </>
-        ) : (
+  if (props.tracks === 0) {
+    return (
+      <div className={classes.Tracks}>
+        <div className={classes.Container}>
+          <div className={classes.TracksTitle}>
+            <Title>Catalog</Title>
+            <p>Found: {tracks.length} tracks.</p>
+          </div>
           <Result
             title="No Tracks found."
             extra={
@@ -78,7 +50,36 @@ const Home = props => {
               </Button>
             }
           />
-        )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={classes.Tracks}>
+      <div className={classes.Container}>
+        <div className={classes.TracksTitle}>
+          <Title>Catalog</Title>
+          <p>Found: {tracks.length} tracks.</p>
+        </div>
+
+        <TracksList
+          tracks={tracks}
+          getTracks={onGetTracks}
+          onButtonClick={openModal}
+        />
+        <Modal
+          title="Track Details"
+          visible={visible}
+          onOk={handleOk}
+          onCancel={() => setVisible(false)}
+        >
+          {fetchLoading ? (
+            <Spinner />
+          ) : (
+            <ModalContent singleTrack={singleTrack} />
+          )}
+        </Modal>
       </div>
     </div>
   );

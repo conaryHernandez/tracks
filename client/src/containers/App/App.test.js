@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { storeFactory } from './testUtils';
+import { storeFactory } from '../../tests/testUtils';
 
 import { render, screen } from '@testing-library/react';
 import App from './App';
@@ -40,13 +40,13 @@ test('app rendering', () => {
 test('renders fallback message if tracks are not available', () => {
   setup({ trck: { tracks: [] } });
 
-  const linkElement = screen.getByText('No Tracks found.');
-  expect(linkElement).toBeInTheDocument();
+  const trackLabel = screen.getByText('Found: 0 tracks.');
+  expect(trackLabel).toBeInTheDocument();
 });
 
 test('renders counting message if tracks are available', () => {
   setup({ trck: { tracks: ['100', '101'] } });
 
-  const linkElement = screen.getByText('Found: 2 tracks.');
-  expect(linkElement).toBeInTheDocument();
+  const trackLabel = screen.getByText('Found: 2 tracks.');
+  expect(trackLabel).toBeInTheDocument();
 });
