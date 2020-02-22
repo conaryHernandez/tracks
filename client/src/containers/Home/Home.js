@@ -19,8 +19,9 @@ const Home = props => {
   const [visible, setVisible] = useState(false);
 
   const tracksArray = Object.keys(tracks);
-  const serverError = Object.keys(error).length > 0 && tracksArray.length === 0;
-  const tracksListEmpty = tracksArray.length === 0;
+  const isTracksListEmpty = tracksArray.length === 0;
+  const serverError = Object.keys(error).length > 0 && isTracksListEmpty;
+  let fallbackContent = null;
 
   const openModal = trackId => {
     setFetchLoading(true);
@@ -39,24 +40,16 @@ const Home = props => {
 
   const handleOk = () => setVisible(false);
 
-  if (serverError || tracksListEmpty) {
-    return (
-      <div className={classes.Tracks}>
-        <div className={classes.Container}>
-          <div className={classes.TracksTitle}>
-            <Title>Catalog</Title>
-            <p>Found: {tracksArray.length} tracks.</p>
-          </div>
-          <Result
-            title="No Tracks found."
-            extra={
-              <Button type="primary" key="console">
-                <Link to="/">Refresh</Link>
-              </Button>
-            }
-          />
-        </div>
-      </div>
+  if (serverError && isTracksListEmpty) {
+    fallbackContent = (
+      <Result
+        title="No Tracks found."
+        extra={
+          <Button type="primary" key="console">
+            <Link to="/">Refresh</Link>
+          </Button>
+        }
+      />
     );
   }
 
@@ -68,7 +61,7 @@ const Home = props => {
           <p>Found: {tracksArray.length || 0} tracks.</p>
         </div>
 
-        {tracksListEmpty === 0 && <Spinner />}
+        {fallbackContent}
 
         <TracksList
           tracks={tracksArray}
