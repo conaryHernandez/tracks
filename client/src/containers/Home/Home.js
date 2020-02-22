@@ -13,12 +13,14 @@ import ModalContent from './components/ModalContent/ModalContent';
 const { Title } = Typography;
 
 const Home = props => {
-  const { onGetTracks, tracks = {}, onGetSingleTrack, error, id } = props;
+  const { onGetTracks, tracks = {}, onGetSingleTrack, error = {}, id } = props;
 
   const [fetchLoading, setFetchLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const tracksArray = Object.keys(tracks);
+  const serverError = Object.keys(error).length > 0 && tracksArray.length === 0;
+  const tracksListEmpty = tracksArray.length === 0;
 
   const openModal = trackId => {
     setFetchLoading(true);
@@ -37,7 +39,7 @@ const Home = props => {
 
   const handleOk = () => setVisible(false);
 
-  if (error?.message) {
+  if (serverError || tracksListEmpty) {
     return (
       <div className={classes.Tracks}>
         <div className={classes.Container}>
@@ -66,7 +68,7 @@ const Home = props => {
           <p>Found: {tracksArray.length || 0} tracks.</p>
         </div>
 
-        {tracksArray.length === 0 && <Spinner />}
+        {tracksListEmpty === 0 && <Spinner />}
 
         <TracksList
           tracks={tracksArray}

@@ -1,8 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  tracks: [],
-  error: '',
+  tracks: {},
+  error: {},
   id: ''
 };
 
