@@ -13,16 +13,12 @@ import ModalContent from './components/ModalContent/ModalContent';
 const { Title } = Typography;
 
 const Home = props => {
-  const {
-    onGetTracks,
-    tracks = [],
-    onGetSingleTrack,
-    singleTrack,
-    error
-  } = props;
+  const { onGetTracks, tracks = {}, onGetSingleTrack, error, id } = props;
 
   const [fetchLoading, setFetchLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  const tracksArray = Object.keys(tracks);
 
   const openModal = trackId => {
     setFetchLoading(true);
@@ -37,7 +33,7 @@ const Home = props => {
 
   useEffect(() => {
     setFetchLoading(false);
-  }, [singleTrack, tracks]);
+  }, [id, tracks]);
 
   const handleOk = () => setVisible(false);
 
@@ -47,7 +43,7 @@ const Home = props => {
         <div className={classes.Container}>
           <div className={classes.TracksTitle}>
             <Title>Catalog</Title>
-            <p>Found: {tracks.length} tracks.</p>
+            <p>Found: {tracksArray.length} tracks.</p>
           </div>
           <Result
             title="No Tracks found."
@@ -67,13 +63,13 @@ const Home = props => {
       <div className={classes.Container}>
         <div className={classes.TracksTitle}>
           <Title>Catalog</Title>
-          <p>Found: {tracks.length} tracks.</p>
+          <p>Found: {tracksArray.length || 0} tracks.</p>
         </div>
 
-        {tracks.length === 0 && !error?.message && <Spinner />}
+        {tracksArray.length === 0 && <Spinner />}
 
         <TracksList
-          tracks={tracks}
+          tracks={tracksArray}
           getTracks={onGetTracks}
           onButtonClick={openModal}
         />
@@ -86,7 +82,7 @@ const Home = props => {
           {fetchLoading ? (
             <Spinner />
           ) : (
-            <ModalContent singleTrack={singleTrack} />
+            <ModalContent singleTrack={tracks[id]} />
           )}
         </Modal>
       </div>
@@ -97,7 +93,7 @@ const Home = props => {
 const mapStateToProps = state => {
   return {
     tracks: state.trck.tracks,
-    singleTrack: state.trck.track,
+    id: state.trck.id,
     error: state.trck.error
   };
 };

@@ -33,7 +33,7 @@ export const postSingleTrack = id => {
     axios
       .post('/track', { id })
       .then(response => {
-        dispatch(postSingleTrackSuccess(response.data.track));
+        dispatch(postSingleTrackSuccess(response.data.id));
       })
       .catch(err => {
         dispatch(postSingleTrackFail(err));

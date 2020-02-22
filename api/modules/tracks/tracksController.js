@@ -10,7 +10,7 @@ exports.getAllTracks = (req, res, next) => {
     Track.fetchAll(tracks => {
       res.status(statusCodes.OK).json({
         message: serverMessages.SUCCESS,
-        tracks: Object.keys(tracks)
+        tracks
       });
     });
   } catch (err) {
@@ -25,8 +25,8 @@ exports.postTrack = (req, res, next) => {
   const { id = null } = req.body;
 
   try {
-    if (!id) {
-      const error = new Error('Please provide an ID');
+    if (!id || typeof id !== 'string') {
+      const error = new Error('Please provide a valid ID');
 
       error.statusCode = statusCodes.NOT_FOUND;
 
@@ -39,12 +39,12 @@ exports.postTrack = (req, res, next) => {
 
         error.statusCode = statusCodes.NOT_FOUND;
 
-        throw error;
+        if (error) {
+          return next(error);
+        }
       }
 
-      res
-        .status(statusCodes.OK)
-        .json({ message: serverMessages.SUCCESS, track });
+      res.status(statusCodes.OK).json({ message: serverMessages.SUCCESS, id });
     });
   } catch (err) {
     next(err);
