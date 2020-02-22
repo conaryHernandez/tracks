@@ -39,9 +39,7 @@ exports.postTrack = (req, res, next) => {
 
         error.statusCode = statusCodes.NOT_FOUND;
 
-        if (error) {
-          return next(error);
-        }
+        return next(error);
       }
 
       res.status(statusCodes.OK).json({ message: serverMessages.SUCCESS, id });
