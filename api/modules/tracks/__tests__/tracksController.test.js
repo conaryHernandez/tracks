@@ -24,7 +24,7 @@ describe('Tracks Controller', () => {
       .expect(200, done);
   });
 
-  it('should return track if track ID if ID exists in mocked data', done => {
+  it('should return track ID if ID exists in mocked data', done => {
     request(app)
       .post('/track')
       .send({ id: '101' })
